@@ -1,28 +1,43 @@
-#include <fmt/core.h>
-
+// #include <fmt/core.h>
 #include <barrier>
+#include <generator>
+#include <iostream>
+#include <print>
+// #include <format>
 #include <thread>
 import infoview;
 import stl;
-constexpr auto use_vector() {
-  Vector<int> vec{1, 2, 3, 4, 5};
-  return vec.size();
-}
+import mytest;
+// struct Point{
+//   double x,y;
+// };
+// auto use_vector() {
+//   Vector<int> vec{1, 2, 3, 4, 5};
+//   return vec;
+// }
+std::generator<int> get(int n) {
+  int x = 0;
+  for (; x < n; x++) {
+    std::println("value {}", x);
 
+    co_yield x;
+  }
+  // co_return 1;
+}
 void waitall() {
   std::barrier<> b(2);
   std::thread t1([&b]() {
-    fmt::println("t1 start");
+    std::println("t1 start");
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
     b.arrive_and_wait();
-    fmt::println("t1");
+    std::println("t1");
   });
   std::thread t2([&b]() {
-    fmt::println("t2 start");
+    std::println("t2 start");
     std::this_thread::sleep_for(std::chrono::seconds(5));
     b.arrive_and_wait();
-    fmt::println("t2");
+    std::println("t2");
   });
   t1.join();
   t2.join();
@@ -37,9 +52,9 @@ void deduce() {
   //             << std::endl;
 }
 
-int main(int argc, char* argv[]) {
-  fmt::println("n {}", argc);
-  fmt::println("last {}", argv[argc - 1]);
+int main(int argc, char *argv[]) {
+  std::println("n {}", argc);
+  std::println("last {}", argv[argc - 1]);
   Vector<StringView> names{"s1", "s2"};
   DynamicView view{names};
   view.InitTruck();
@@ -50,25 +65,48 @@ int main(int argc, char* argv[]) {
   auto re = view.HasStation(station_id);
   if (re) {
     auto station = view.GetStaionById(station_id);
-    fmt::println("station {}", station.GetName());
+    std::println("station {}", station.GetName());
     auto p = station.GetPoint();
-    fmt::println("{0},{1},{2}", p.x, p.y, p.z);
+    std::println("{0},{1},{2}", p.x, p.y, p.z);
   }
 
   String truck_id{"t1"};
 
-  auto ret = view.GetResult(truck_id);
+  auto ret = true;
+  //  view.GetResult(truck_id);
 
   if (ret) {
-    auto& station = view.GetTruckById(truck_id);
-    fmt::println("truck {}", station.GetName());
-    fmt::println("value {}", ret.value());
+    auto &station = view.GetTruckById(truck_id);
+    std::println("truck {}", station.GetName());
+    // std::println("value {}", ret.value());
 
   } else {
-    fmt::println("error {}", ret.error());
+    // std::println("error {}", ret.error());
   }
-  fmt::println("size {}", use_vector());
+  // std::println("size {}", use_vector());
   waitall();
   deduce();
+  // GetName(view);
+  // Vector<int> mi(SIZE); // error
+  Vector<int> mc(SIZEC);
+  Point2 p2 = GetPoint();
+  Point p0;
+  p0.x = 0;
+  p0.y = 200;
+  std::println("p2 {} {}", p2.x, p2.y);
+
+  // auto x1 = get(34);
+
+  // std::println("x {0}", x.get());
+  // std::cout << x1;
+  // auto x2 = get(34);
+  for (auto &&x : get(10)) {
+    std::println("x {0}", x);
+  }
+  auto f1 = std::move(get(5));
+  for (auto b = f1.begin(); f1.end() != b; b++) {
+    std::println("m {0}", *b);
+  }
+
   return 0;
 }

@@ -9,7 +9,7 @@ module;
 #include <cstdio>
 #include <cstring>
 #include <exception>
-// #include <source_location>
+#include <variant>
 #include <filesystem>
 #include <forward_list>
 #include <iostream>
@@ -38,7 +38,8 @@ module;
 #include <condition_variable>
 #include <mutex>
 #include <queue>
-// #include <concept>
+#include <iostream>
+// #include <concepts>
 
 export module stl;
 
@@ -94,18 +95,26 @@ export {
     template <typename T>
     using Optional = std::optional<T>;
     constexpr std::nullopt_t None = std::nullopt;
+
+    // template <typename T1,typename T2>
+    // using Expected = std::expected<T1,T2>;
+
+    // template <typename T>
+    // using Unexpected = std::unexpected<T>;
+
     template <typename T1,typename T2>
-    using Expected = std::expected<T1,T2>;
+    using Expected = std::variant<T1,T2>;
 
     template <typename T>
-    using Unexpected = std::unexpected<T>;
+    using Unexpected = std::variant<T>;
+
 
     using StdOfStream = std::ofstream;
 
     // String
 
     using String = std::basic_string<char>;
-
+    using WString = std::wstring;
     using StringView = std::string_view;
 
     inline bool IsEqual(const String &s1, const String &s2) { return s1 == s2; }
@@ -418,6 +427,10 @@ export {
     constexpr bool IsSame() {
         return std::is_same<T1, T2>();
     }
+    // iostream
+//     template <typename T1>
+//     using Cout = std::cout<T1>;
+//     using Endl = std::endl;
 }
 
 export template <typename T1, typename T2>

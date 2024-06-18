@@ -1,6 +1,7 @@
 module;
 #include <string>
-#include "fmt/core.h"
+// #include "fmt/core.h"
+#include <print>
 // #include <print>
 export module math;
 import :other;
@@ -23,8 +24,8 @@ export struct TruckInfo{
   std::string id;
   int route_id; 
   void PrintName(){
-    fmt::println("name {}",name);
-    fmt::println("shift {}",shift(20));
+    std::println("name {}",name);
+    std::println("shift {}",shift(20));
     
   }
 };

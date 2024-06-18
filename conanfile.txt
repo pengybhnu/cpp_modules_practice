@@ -1,7 +1,11 @@
 [requires]
-fmt/10.1.1
-
+async_simple/1.2
+matchit/1.0.1
+# concurrencpp/0.1.7
 [generators]
-cmake
-[options]
+CMakeDeps
+CMakeToolchain
+[tool_requires]
+cmake/3.29.3
 
+#conan install . --output-folder=build --build=missing
